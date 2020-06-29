@@ -429,7 +429,8 @@ func ReadPacket(r io.Reader, expectedCookie []byte) ([]Record, error) {
 	}
 
 	if expectedCookie != nil && bytes.Compare(expectedCookie, header.Cookie) != 0 {
-		return nil, errors.New("expected cookie did not match")
+		s := fmt.Sprintf("expected cookie did not match, expected: %s, header: %s", expectedCookie, header.Cookie)
+		return nil, errors.New(s)
 	}
 
 	payloadBytes := make([]byte, header.PayloadLength)
