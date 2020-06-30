@@ -428,8 +428,9 @@ func ReadPacket(r io.Reader, expectedCookie []byte) ([]Record, error) {
 		return nil, err
 	}
 
+	fmt.Printf("expected: %v, header: %v \n", expectedCookie, header.Cookie)
 	if expectedCookie != nil && bytes.Compare(expectedCookie, header.Cookie) != 0 {
-		s := fmt.Sprintf("expected cookie did not match, expected: %v, header: %v", expectedCookie, header.Cookie)
+		s := fmt.Sprintf("expected cookie did not match, expected: %v, header: %v\n", expectedCookie, header.Cookie)
 		return nil, errors.New(s)
 	}
 
