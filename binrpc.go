@@ -261,12 +261,14 @@ func CreateRecord(v interface{}) (*Record, error) {
 // ReadHeader is a low level function that reads from r and returns a Header.
 func ReadHeader(r io.Reader) (*Header, error) {
 	buf := make([]byte, 2)
+	fmt.Printf("[ReadHeader] buf: %v", buf)
 
 	if len, err := r.Read(buf); err != nil {
 		return nil, errors.Wrap(err, "cannot read header")
 	} else if len != 2 {
 		return nil, fmt.Errorf("cannot read header: read=%d/%d", len, 2)
 	}
+	fmt.Printf("[ReadHeader] after Read, buf: %v", buf)
 
 	if magic := buf[0] >> 4; magic != BinRPCMagic {
 		return nil, fmt.Errorf("magic field did not match, expected %X, got %X", BinRPCMagic, magic)
@@ -278,8 +280,10 @@ func ReadHeader(r io.Reader) (*Header, error) {
 
 	sizeOfLength := buf[1]&0x0C>>2 + 1
 	sizeOfCookie := buf[1]&0x3 + 1
+	fmt.Printf("sizeofLen: %v, sizeofCook: %v", sizeOfLength, sizeOfCookie)
 
 	buf = make([]byte, sizeOfLength)
+	fmt.Printf("[ReadHeader] sizeOfL  buf: %v", buf)
 
 	if len, err := r.Read(buf); err != nil {
 		return nil, errors.Wrap(err, "cannot read total length")
@@ -294,12 +298,14 @@ func ReadHeader(r io.Reader) (*Header, error) {
 	}
 
 	header.Cookie = make([]byte, sizeOfCookie)
+	fmt.Printf("[ReadHeader] header.Cookie: %v", header.Cookie)
 
 	if len, err := r.Read(header.Cookie); err != nil {
 		return nil, errors.Wrap(err, "cannot read cookie")
 	} else if len != int(sizeOfCookie) {
 		return nil, fmt.Errorf("cannot read cookie, read=%d/%d", len, sizeOfCookie)
 	}
+	fmt.Printf("[ReadHeader] after read header.Cookie: %v", header.Cookie)
 
 	return &header, nil
 }
