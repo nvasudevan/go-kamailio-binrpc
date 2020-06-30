@@ -509,7 +509,7 @@ func WritePacket(w io.Writer, values ...interface{}) ([]byte, error) {
 
 	cookieBytes := make([]byte, sizeOfCookie)
 	binary.BigEndian.PutUint32(cookieBytes, cookie)
-	fmt.Printf("cookie: %d, cookieBytes: %v \n", cookie, cookieBytes)
+	fmt.Printf("cookie: %d, cookieBytes: %v, header.Bytes: %v, \n", cookie, cookieBytes, header.Bytes())
 
 	return cookieBytes, nil
 }
