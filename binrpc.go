@@ -279,7 +279,7 @@ func ReadHeader(r io.Reader) (*Header, error) {
 	}
 
 	sizeOfLength := buf[1]&0x0C>>2 + 1
-	sizeOfCookie := buf[1]&0x3 + 1
+	sizeOfCookie := 4
 	fmt.Printf("sizeofLen: %v, sizeofCook: %v\n", sizeOfLength, sizeOfCookie)
 
 	buf = make([]byte, sizeOfLength)
