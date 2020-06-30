@@ -497,9 +497,11 @@ func WritePacket(w io.Writer, values ...interface{}) ([]byte, error) {
 
 	header.WriteByte(BinRPCMagic<<4 | BinRPCVersion)
 	header.WriteByte((sizeOfLength-1)<<2 | byte(sizeOfCookie-1))
+	fmt.Printf("[1]header: %v, sizeOfL: %v, totalLen: %v, sizeOfCo: %v\n", header, sizeOfLength, totalLength, sizeOfCookie)
 
 	binary.Write(&header, binary.BigEndian, totalLength)
 	binary.Write(&header, binary.BigEndian, cookie)
+	fmt.Printf("[2]header: %v\n", header)
 
 	writer := bufio.NewWriter(w)
 
