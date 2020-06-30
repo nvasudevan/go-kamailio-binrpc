@@ -497,7 +497,8 @@ func WritePacket(w io.Writer, values ...interface{}) ([]byte, error) {
 
 	writer := bufio.NewWriter(w)
 
-	if _, err := writer.Write(header.Bytes()); err != nil {
+	hdrBytes := header.Bytes()
+	if _, err := writer.Write(hdrBytes); err != nil {
 		return nil, fmt.Errorf("cannot write header: err=%v", err)
 	}
 	if _, err := writer.Write(payload.Bytes()); err != nil {
@@ -509,7 +510,7 @@ func WritePacket(w io.Writer, values ...interface{}) ([]byte, error) {
 
 	cookieBytes := make([]byte, sizeOfCookie)
 	binary.BigEndian.PutUint32(cookieBytes, cookie)
-	fmt.Printf("cookie: %d, cookieBytes: %v, header.Bytes: %v, \n", cookie, cookieBytes, header)
+	fmt.Printf("cookie: %d, cookieBytes: %v, header: %v, hdrBytes: %v\n", cookie, cookieBytes, header, hdrBytes)
 
 	return cookieBytes, nil
 }
