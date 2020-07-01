@@ -279,7 +279,7 @@ func ReadHeader(r io.Reader) (*Header, error) {
 	}
 
 	sizeOfLength := buf[1]&0x0C>>2 + 1
-	sizeOfCookie := 4
+	sizeOfCookie := buf[1]&0x3 + 1
 	fmt.Printf("sizeofLen: %v, sizeofCook: %v\n", sizeOfLength, sizeOfCookie)
 
 	buf = make([]byte, sizeOfLength)
@@ -518,7 +518,7 @@ func WritePacket(w io.Writer, values ...interface{}) ([]byte, error) {
 
 	cookieBytes := make([]byte, sizeOfCookie)
 	binary.BigEndian.PutUint32(cookieBytes, cookie)
-	fmt.Printf("cookie: %d, cookieBytes: %v, header: %v, hdrBytes: %v\n", cookie, cookieBytes, header, hdrBytes)
+	fmt.Printf("cookie: %v, cookieBytes: %v, header: %v, hdrBytes: %v\n", cookie, cookieBytes, header, hdrBytes)
 
 	return cookieBytes, nil
 }
