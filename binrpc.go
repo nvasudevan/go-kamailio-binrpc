@@ -469,7 +469,7 @@ func ReadPacket(r io.Reader, expectedCookie []byte) ([]Record, error) {
 func BigCookie() uint32 {
 	for {
 		bigv := uint32(rand.Int63())
-		if bigv > 10000000000 {
+		if bigv > 100000000 {
 			return bigv
 		}
 	}
